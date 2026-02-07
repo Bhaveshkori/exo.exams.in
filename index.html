@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <meta charset="UTF-8">
   <title>ExoExams</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <style>
     body {
       margin: 0;
       font-family: Arial, sans-serif;
-      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+      background: linear-gradient(135deg,#0f2027,#203a43,#2c5364);
       color: white;
       text-align: center;
     }
@@ -18,22 +18,13 @@
       font-size: 48px;
     }
 
-    .subtitle {
-      font-size: 18px;
-      margin-bottom: 30px;
-      opacity: 0.8;
-    }
-
     .search-box {
-      display: flex;
-      justify-content: center;
-      margin-bottom: 30px;
-      gap: 10px;
+      margin-top: 30px;
     }
 
     input {
       padding: 15px;
-      width: 280px;
+      width: 300px;
       border-radius: 8px;
       border: none;
       font-size: 16px;
@@ -41,95 +32,87 @@
 
     button {
       padding: 15px 20px;
-      border: none;
       border-radius: 8px;
-      background: #00d4ff;
-      cursor: pointer;
+      border: none;
+      background: #00c6ff;
+      color: black;
       font-weight: bold;
-    }
-
-    button:hover {
-      background: #00aacc;
+      cursor: pointer;
+      margin-left: 10px;
     }
 
     .result-card {
-      background: rgba(255,255,255,0.1);
-      padding: 20px;
-      margin: 20px auto;
-      width: 320px;
-      border-radius: 10px;
+      margin-top: 30px;
     }
 
-    .result-card button {
-      margin: 5px;
-      padding: 8px 12px;
-      font-size: 14px;
+    .year-btn {
+      margin: 10px;
+      padding: 10px 15px;
+      background: white;
+      color: black;
+      border-radius: 6px;
+      cursor: pointer;
+      display: inline-block;
     }
 
-    @media (max-width: 500px) {
-      h1 {
-        font-size: 32px;
-      }
-
-      input {
-        width: 180px;
-      }
-    }
   </style>
 </head>
 
 <body>
 
   <h1>ExoExams</h1>
-  <div class="subtitle">All Government Exam Papers in One Place</div>
+  <p>All Government Exam Papers in One Place</p>
 
   <div class="search-box">
-    <input type="text" id="searchInput" placeholder="Type exam name...">
+    <input type="text" id="searchInput" placeholder="Search exam...">
     <button onclick="searchExam()">Search</button>
   </div>
 
   <div id="results"></div>
 
-  <script src="data.js"></script>
-
   <script>
+
+    const exams = {
+      "jee": {
+        name: "JEE main",
+        years: {
+          "2024": "paper/jee/2024.pdf",
+          "2023": "paper/jee/2023.pdf",
+          "2022": "paper/jee/2022.pdf"
+        }
+      }
+    };
+
     function searchExam() {
       const query = document.getElementById("searchInput").value.toLowerCase();
       const resultsDiv = document.getElementById("results");
       resultsDiv.innerHTML = "";
 
-      let found = false;
+      if (query.includes("jee")) {
 
-      for (let key in exams) {
-        if (key.includes(query) || exams[key].name.toLowerCase().includes(query)) {
+        const card = document.createElement("div");
+        card.className = "result-card";
+        card.innerHTML = "<h2>JEE Advanced</h2>";
 
-          found = true;
-          const exam = exams[key];
+        for (let year in exams.jee.years) {
+          const btn = document.createElement("div");
+          btn.className = "year-btn";
+          btn.innerText = year;
 
-          const card = document.createElement("div");
-          card.className = "result-card";
+          btn.onclick = function() {
+            window.open(exams.jee.years[year], "_blank");
+          };
 
-          const title = document.createElement("h3");
-          title.innerText = exam.name;
-          card.appendChild(title);
-
-          for (let year in exam.years) {
-            const btn = document.createElement("button");
-            btn.innerText = year;
-            btn.onclick = function() {
-              window.open(exam.years[year], "_blank");
-            };
-            card.appendChild(btn);
-          }
-
-          resultsDiv.appendChild(card);
+          card.appendChild(btn);
         }
-      }
 
-      if (!found) {
+        resultsDiv.appendChild(card);
+
+      } else {
         resultsDiv.innerHTML = "<p>No exam found.</p>";
       }
     }
+
   </script>
 
 </body>
