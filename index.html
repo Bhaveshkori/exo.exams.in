@@ -1,119 +1,91 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="UTF-8">
-  <title>ExoExams</title>
+<meta charset="UTF-8">
+<title>ExoExams</title>
 
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: linear-gradient(135deg,#0f2027,#203a43,#2c5364);
-      color: white;
-      text-align: center;
-    }
+<style>
+body{
+  margin:0;
+  font-family:Arial;
+  background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+  color:white;
+  text-align:center;
+}
 
-    h1 {
-      margin-top: 60px;
-      font-size: 48px;
-    }
+h1{
+  margin-top:60px;
+  font-size:48px;
+}
 
-    .search-box {
-      margin-top: 30px;
-    }
+.exam-container{
+  margin-top:50px;
+}
 
-    input {
-      padding: 15px;
-      width: 300px;
-      border-radius: 8px;
-      border: none;
-      font-size: 16px;
-    }
+.exam-card{
+  width:300px;
+  margin:20px auto;
+  padding:20px;
+  border-radius:12px;
+  background:rgba(255,255,255,0.1);
+  cursor:pointer;
+  transition:0.3s;
+}
 
-    button {
-      padding: 15px 20px;
-      border-radius: 8px;
-      border: none;
-      background: #00c6ff;
-      color: black;
-      font-weight: bold;
-      cursor: pointer;
-      margin-left: 10px;
-    }
+.exam-card:hover{
+  transform:scale(1.05);
+  background:rgba(255,255,255,0.2);
+}
 
-    .result-card {
-      margin-top: 30px;
-    }
+.year-list{
+  display:none;
+  margin-top:15px;
+}
 
-    .year-btn {
-      margin: 10px;
-      padding: 10px 15px;
-      background: white;
-      color: black;
-      border-radius: 6px;
-      cursor: pointer;
-      display: inline-block;
-    }
-
-  </style>
+.year-btn{
+  margin:8px;
+  padding:10px 15px;
+  background:#00c6ff;
+  color:black;
+  border-radius:6px;
+  cursor:pointer;
+  display:inline-block;
+}
+</style>
 </head>
 
 <body>
 
-  <h1>ExoExams</h1>
-  <p>All Government Exam Papers in One Place</p>
+<h1>ExoExams</h1>
+<p>All Government Exam Papers in One Place</p>
 
-  <div class="search-box">
-    <input type="text" id="searchInput" placeholder="Search exam...">
-    <button onclick="searchExam()">Search</button>
+<div class="exam-container">
+
+  <div class="exam-card" onclick="toggleYears()">
+    <h2>JEE Advanced</h2>
+
+    <div id="yearList" class="year-list">
+      <div class="year-btn" onclick="openPDF('pepar/jee/2024.pdf')">2024</div>
+      <div class="year-btn" onclick="openPDF('pepar/jee/2023.pdf')">2023</div>
+      <div class="year-btn" onclick="openPDF('pepar/jee/2022.pdf')">2022</div>
+    </div>
+
   </div>
 
-  <div id="results"></div>
+</div>
 
-  <script>
+<script>
 
-    const exams = {
-      "jee": {
-        name: "JEE main",
-        years: {
-          "2024": "pepar/jee/2024.pdf",
-          "2023": "pepar/jee/2023.pdf",
-          "2022": "pepar/jee/2022.pdf"
-        }
-      }
-    };
+function toggleYears(){
+  const list = document.getElementById("yearList");
+  list.style.display = list.style.display === "block" ? "none" : "block";
+}
 
-    function searchExam() {
-      const query = document.getElementById("searchInput").value.toLowerCase();
-      const resultsDiv = document.getElementById("results");
-      resultsDiv.innerHTML = "";
+function openPDF(path){
+  window.open(path,"_blank");
+}
 
-      if (query.includes("jee")) {
-
-        const card = document.createElement("div");
-        card.className = "result-card";
-        card.innerHTML = "<h2>JEE Advanced</h2>";
-
-        for (let year in exams.jee.years) {
-          const btn = document.createElement("div");
-          btn.className = "year-btn";
-          btn.innerText = year;
-
-          btn.onclick = function() {
-            window.open(exams.jee.years[year], "_blank");
-          };
-
-          card.appendChild(btn);
-        }
-
-        resultsDiv.appendChild(card);
-
-      } else {
-        resultsDiv.innerHTML = "<p>No exam found.</p>";
-      }
-    }
-
-  </script>
+</script>
 
 </body>
 </html>
