@@ -1,73 +1,20 @@
-<!DOCTYPE html>
-<html>
-<head>
-<title>Exam Paper Hub</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<style>
-body {
-  margin:0;
-  font-family: Arial;
-  background: linear-gradient(135deg,#0f2027,#203a43,#2c5364);
-  color:white;
-  text-align:center;
-}
-.container {
-  padding:20px;
-}
-input {
-  padding:12px;
-  width:70%;
-  max-width:400px;
-  border-radius:8px;
-  border:none;
-}
-button {
-  padding:12px 20px;
-  border:none;
-  border-radius:8px;
-  background:#00f2fe;
-  cursor:pointer;
-}
-.card {
-  background:rgba(255,255,255,0.1);
-  margin:20px auto;
-  padding:20px;
-  width:80%;
-  max-width:500px;
-  border-radius:12px;
-  backdrop-filter: blur(10px);
-}
-a {
-  color:#00f2fe;
-  text-decoration:none;
-}
-</style>
-</head>
-<body>
-
-<div class="container">
-<h1>Exam Paper Hub</h1>
-<input type="text" id="search" placeholder="Search Exam Name">
-<button onclick="searchExam()">Search</button>
-<div id="results"></div>
-</div>
-
 <script>
-async function searchExam(){
+async function searchExam() {
   const query = document.getElementById("search").value.toLowerCase();
+
   const res = await fetch("https://script.google.com/macros/s/AKfycbwGv9nmWP7AWXVKOXwPYOKsI2wtOa6QXYIB8UDgBZdSOJDYLkUlWWr-2gQC2WU1ul_IgA/exec");
   const data = await res.json();
 
   let output = "";
 
-  for(let i=1;i<data.length;i++){
-    if(data[i][0].toLowerCase().includes(query)){
+  for (let i = 1; i < data.length; i++) {
+    if (data[i][0].toLowerCase().includes(query)) {
       output += `
-      <div class="card">
-      <h3>${data[i][0]} - ${data[i][1]}</h3>
-      <p>Category: ${data[i][3]}</p>
-      <a href="${data[i][2]}" target="_blank">Download PDF</a>
-      </div>
+        <div class="card">
+          <h3>${data[i][0]} - ${data[i][1]}</h3>
+          <p>Category: ${data[i][3]}</p>
+          <a href="${data[i][2]}" target="_blank">Download PDF</a>
+        </div>
       `;
     }
   }
@@ -75,6 +22,3 @@ async function searchExam(){
   document.getElementById("results").innerHTML = output;
 }
 </script>
-
-</body>
-</html>
