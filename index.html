@@ -1,58 +1,118 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="UTF-8">
-  <title>Exam Paper Hub</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <style>
-    body {
-      margin:0;
-      font-family: Arial;
-      background: linear-gradient(135deg,#0f2027,#203a43,#2c5364);
-      color:white;
-      text-align:center;
-    }
-    .container {
-      padding:40px 20px;
-    }
-    input {
-      padding:12px;
-      width:70%;
-      max-width:400px;
-      border-radius:8px;
-      border:none;
-    }
-    button {
-      padding:12px 20px;
-      border:none;
-      border-radius:8px;
-      background:#00f2fe;
-      cursor:pointer;
-      margin-left:5px;
-    }
-    .card {
-      background:rgba(255,255,255,0.1);
-      margin:20px auto;
-      padding:20px;
-      width:80%;
-      max-width:500px;
-      border-radius:12px;
-      backdrop-filter: blur(10px);
-    }
-    a {
-      color:#00f2fe;
-      text-decoration:none;
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ExoExams</title>
+
+<style>
+body {
+  margin:0;
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(135deg,#0f0c29,#302b63,#24243e);
+  color:white;
+  text-align:center;
+}
+
+.hero {
+  padding:100px 20px;
+}
+
+.hero h1 {
+  font-size:48px;
+  background: linear-gradient(90deg,#00f2fe,#4facfe);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+}
+
+.hero p {
+  opacity:0.8;
+  margin-top:15px;
+}
+
+.search-box {
+  margin-top:40px;
+}
+
+input {
+  padding:15px;
+  width:60%;
+  max-width:400px;
+  border-radius:30px;
+  border:none;
+  outline:none;
+}
+
+button {
+  padding:15px 25px;
+  border-radius:30px;
+  border:none;
+  background:linear-gradient(90deg,#00f2fe,#4facfe);
+  color:black;
+  cursor:pointer;
+  font-weight:bold;
+  margin-left:10px;
+  transition:0.3s;
+}
+
+button:hover {
+  transform:scale(1.05);
+}
+
+.card {
+  background:rgba(255,255,255,0.1);
+  backdrop-filter:blur(10px);
+  margin:30px auto;
+  padding:20px;
+  width:80%;
+  max-width:500px;
+  border-radius:20px;
+}
+
+.features {
+  margin-top:100px;
+  padding:50px 20px;
+}
+
+.feature-box {
+  margin:20px;
+  padding:20px;
+  background:rgba(255,255,255,0.05);
+  border-radius:15px;
+}
+
+footer {
+  margin-top:80px;
+  padding:20px;
+  opacity:0.6;
+}
+</style>
 </head>
+
 <body>
 
-<div class="container">
-  <h1>Exam Paper Hub</h1>
-  <input type="text" id="search" placeholder="Search Exam Name">
-  <button onclick="searchExam()">Search</button>
+<div class="hero">
+  <h1>ExoExams</h1>
+  <p>All Government Exam Papers in One Place</p>
+
+  <div class="search-box">
+    <input type="text" id="search" placeholder="Search exam like UPSC, JEE, SSC...">
+    <button onclick="searchExam()">Search</button>
+  </div>
+
   <div id="results"></div>
 </div>
+
+<div class="features">
+  <h2>Why Choose ExoExams?</h2>
+  <div class="feature-box">⚡ Instant Paper Access</div>
+  <div class="feature-box">📂 Organized by Category</div>
+  <div class="feature-box">🚀 100% Free & Fast</div>
+</div>
+
+<footer>
+  © 2026 ExoExams | Built by Bhavesh
+</footer>
 
 <script>
 async function searchExam() {
