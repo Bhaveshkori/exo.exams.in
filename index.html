@@ -1,59 +1,56 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>ExoExams</title>
+  <title>ExoExams</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<style>
-body{
-  margin:0;
-  font-family:Arial;
-  background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);
-  color:white;
-  text-align:center;
-}
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+      color: white;
+      text-align: center;
+    }
 
-h1{
-  margin-top:60px;
-  font-size:48px;
-}
+    h1 {
+      margin-top: 40px;
+      font-size: 40px;
+    }
 
-.exam-container{
-  margin-top:50px;
-  display:flex;
-  flex-wrap:wrap;
-  justify-content:center;
-  gap:20px;
-}
+    .exam-container {
+      margin-top: 40px;
+    }
 
-.exam-card{
-  width:250px;
-  padding:20px;
-  border-radius:12px;
-  background:rgba(255,255,255,0.1);
-  cursor:pointer;
-  transition:0.3s;
-}
+    .exam-card {
+      background: rgba(255,255,255,0.1);
+      padding: 20px;
+      margin: 15px auto;
+      width: 250px;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
 
-.exam-card:hover{
-  transform:scale(1.05);
-  background:rgba(255,255,255,0.2);
-}
+    .exam-card:hover {
+      background: rgba(255,255,255,0.2);
+    }
 
-.year-list{
-  margin-top:15px;
-}
+    .year-list {
+      margin-top: 20px;
+    }
 
-.year-btn{
-  margin:6px;
-  padding:8px 12px;
-  background:#00c6ff;
-  color:black;
-  border-radius:6px;
-  cursor:pointer;
-  display:inline-block;
-}
-</style>
+    .year-btn {
+      display: inline-block;
+      margin: 10px;
+      padding: 10px 20px;
+      background: #00d2ff;
+      color: black;
+      border-radius: 6px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+  </style>
 </head>
 
 <body>
@@ -63,48 +60,37 @@ h1{
 
 <div class="exam-container" id="examContainer"></div>
 
+<div class="year-list" id="yearList"></div>
+
+<!-- IMPORTANT: data.js FIRST -->
 <script src="data.js"></script>
 
 <script>
+  const container = document.getElementById("examContainer");
+  const yearList = document.getElementById("yearList");
 
-const container = document.getElementById("examContainer");
-
-for(let key in exams){
-
-  const exam = exams[key];
-
-  const card = document.createElement("div");
-  card.className = "exam-card";
-
-  card.innerHTML = `<h2>${exam.name}</h2>`;
-
-  const yearList = document.createElement("div");
-  yearList.className = "year-list";
-  yearList.style.display = "none";
-
-  for(let year in exam.years){
-    const btn = document.createElement("div");
-    btn.className = "year-btn";
-    btn.innerText = year;
-
-    btn.onclick = function(event){
-      event.stopPropagation();
-      window.open(exam.years[year], "_blank");
-    };
-
-    yearList.appendChild(btn);
+  for (let key in exams) {
+    const card = document.createElement("div");
+    card.className = "exam-card";
+    card.innerText = exams[key].name;
+    card.onclick = () => showYears(key);
+    container.appendChild(card);
   }
 
-  card.appendChild(yearList);
+  function showYears(key) {
+    yearList.innerHTML = "";
 
-  card.onclick = function(){
-    yearList.style.display =
-      yearList.style.display === "block" ? "none" : "block";
-  };
+    const years = exams[key].years;
 
-  container.appendChild(card);
-}
-
+    for (let year in years) {
+      const link = document.createElement("a");
+      link.href = years[year];
+      link.className = "year-btn";
+      link.innerText = year;
+      link.target = "_blank";
+      yearList.appendChild(link);
+    }
+  }
 </script>
 
 </body>
