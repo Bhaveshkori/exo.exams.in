@@ -1,3 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Exam Paper Hub</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      margin:0;
+      font-family: Arial;
+      background: linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+      color:white;
+      text-align:center;
+    }
+    .container {
+      padding:40px 20px;
+    }
+    input {
+      padding:12px;
+      width:70%;
+      max-width:400px;
+      border-radius:8px;
+      border:none;
+    }
+    button {
+      padding:12px 20px;
+      border:none;
+      border-radius:8px;
+      background:#00f2fe;
+      cursor:pointer;
+      margin-left:5px;
+    }
+    .card {
+      background:rgba(255,255,255,0.1);
+      margin:20px auto;
+      padding:20px;
+      width:80%;
+      max-width:500px;
+      border-radius:12px;
+      backdrop-filter: blur(10px);
+    }
+    a {
+      color:#00f2fe;
+      text-decoration:none;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h1>Exam Paper Hub</h1>
+  <input type="text" id="search" placeholder="Search Exam Name">
+  <button onclick="searchExam()">Search</button>
+  <div id="results"></div>
+</div>
+
 <script>
 async function searchExam() {
   const query = document.getElementById("search").value.toLowerCase();
@@ -22,3 +78,6 @@ async function searchExam() {
   document.getElementById("results").innerHTML = output;
 }
 </script>
+
+</body>
+</html>
