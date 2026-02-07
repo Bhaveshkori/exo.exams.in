@@ -7,44 +7,38 @@
 <style>
 body{
   margin:0;
-  font-family:Arial;
+  font-family:Arial, sans-serif;
   background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);
   color:white;
   text-align:center;
 }
 
 h1{
-  margin-top:40px;
+  margin-top:60px;
+  font-size:40px;
 }
 
 input{
-  padding:10px;
-  width:250px;
+  padding:12px;
+  width:260px;
   border:none;
-  border-radius:6px;
+  border-radius:8px;
+  font-size:16px;
 }
 
 button{
-  padding:10px 20px;
+  padding:12px 20px;
   border:none;
-  border-radius:6px;
+  border-radius:8px;
   cursor:pointer;
   margin-left:5px;
+  font-size:16px;
   background:#00c6ff;
-}
-
-.card{
-  display:inline-block;
-  background:white;
   color:black;
-  padding:15px 30px;
-  margin:15px;
-  border-radius:10px;
-  cursor:pointer;
 }
 
-.years{
-  margin-top:20px;
+.result{
+  margin-top:30px;
 }
 </style>
 </head>
@@ -52,21 +46,16 @@ button{
 <body>
 
 <h1>ExoExams</h1>
+<p>Search like: jee 2024 or neet 2023</p>
 
-<input type="text" id="searchInput" placeholder="Search (jee 2024)">
+<input type="text" id="searchInput" placeholder="Search exam and year">
 <button onclick="searchPaper()">Search</button>
 
-<div id="searchResult" class="years"></div>
-
-<br><br>
-
-<div class="card" onclick="showYears('jee')">JEE</div>
-<div class="card" onclick="showYears('neet')">NEET</div>
-
-<div id="yearContainer" class="years"></div>
+<div id="searchResult" class="result"></div>
 
 <script>
 
+// 👇 yahi se tum future me add karoge (sirf yahi edit karna padega)
 const papers = {
   jee:{
     "2024":"pepar/jee/2024.pdf",
@@ -85,13 +74,13 @@ function searchPaper(){
   const resultDiv = document.getElementById("searchResult");
   resultDiv.innerHTML = "";
 
-  for(let exam in pepar){
-    for(let year in pepar[exam]){
+  for(let exam in papers){
+    for(let year in papers[exam]){
       if(input.includes(exam) && input.includes(year)){
-        resultDiv.innerHTML = 
-          `<button onclick="openPepar('${pepar[exam][year]}')">
-          ${exam.toUpperCase()} ${year}
-          </button>`;
+        resultDiv.innerHTML =
+        `<button onclick="openPaper('${papers[exam][year]}')">
+          ${exam.toUpperCase()} ${year} Download
+        </button>`;
         return;
       }
     }
@@ -100,19 +89,7 @@ function searchPaper(){
   resultDiv.innerHTML = "No paper found.";
 }
 
-function showYears(exam){
-  const container = document.getElementById("yearContainer");
-  container.innerHTML = "";
-
-  for(let year in pepar[exam]){
-    container.innerHTML += 
-      `<button onclick="openPepar('${pepar[exam][year]}')">
-      ${year}
-      </button>`;
-  }
-}
-
-function openPepar(path){
+function openPaper(path){
   window.open(path,"_blank");
 }
 
