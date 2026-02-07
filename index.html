@@ -1,131 +1,136 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ExoExams</title>
+  <title>ExoExams</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<style>
-body{
-  margin:0;
-  font-family:Arial, sans-serif;
-  background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);
-  color:white;
-  text-align:center;
-}
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+      color: white;
+      text-align: center;
+    }
 
-.container{
-  padding:80px 20px;
-}
+    h1 {
+      margin-top: 60px;
+      font-size: 48px;
+    }
 
-h1{
-  font-size:40px;
-  margin-bottom:10px;
-}
+    .subtitle {
+      font-size: 18px;
+      margin-bottom: 30px;
+      opacity: 0.8;
+    }
 
-input{
-  padding:12px;
-  width:60%;
-  max-width:350px;
-  border-radius:8px;
-  border:none;
-}
+    .search-box {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 30px;
+      gap: 10px;
+    }
 
-button{
-  padding:12px 20px;
-  border:none;
-  border-radius:8px;
-  background:#00f2fe;
-  cursor:pointer;
-  margin-left:5px;
-  font-weight:bold;
-}
+    input {
+      padding: 15px;
+      width: 280px;
+      border-radius: 8px;
+      border: none;
+      font-size: 16px;
+    }
 
-.card{
-  background:rgba(255,255,255,0.1);
-  margin:20px auto;
-  padding:20px;
-  width:85%;
-  max-width:500px;
-  border-radius:12px;
-}
+    button {
+      padding: 15px 20px;
+      border: none;
+      border-radius: 8px;
+      background: #00d4ff;
+      cursor: pointer;
+      font-weight: bold;
+    }
 
-a{
-  color:#00f2fe;
-  text-decoration:none;
-}
-</style>
+    button:hover {
+      background: #00aacc;
+    }
+
+    .result-card {
+      background: rgba(255,255,255,0.1);
+      padding: 20px;
+      margin: 20px auto;
+      width: 320px;
+      border-radius: 10px;
+    }
+
+    .result-card button {
+      margin: 5px;
+      padding: 8px 12px;
+      font-size: 14px;
+    }
+
+    @media (max-width: 500px) {
+      h1 {
+        font-size: 32px;
+      }
+
+      input {
+        width: 180px;
+      }
+    }
+  </style>
 </head>
 
 <body>
 
-<div class="container">
   <h1>ExoExams</h1>
-  <p>All Government Exam Papers in One Place</p>
+  <div class="subtitle">All Government Exam Papers in One Place</div>
 
-  <input type="text" id="search" placeholder="Search exam like UPSC, JEE...">
-  <button onclick="searchExam()">Search</button>
+  <div class="search-box">
+    <input type="text" id="searchInput" placeholder="Type exam name...">
+    <button onclick="searchExam()">Search</button>
+  </div>
 
   <div id="results"></div>
-</div>
 
-<script>
+  <script src="data.js"></script>
 
-let examData = [];
-let dataLoaded = false;
+  <script>
+    function searchExam() {
+      const query = document.getElementById("searchInput").value.toLowerCase();
+      const resultsDiv = document.getElementById("results");
+      resultsDiv.innerHTML = "";
 
-async function loadData(){
-  try{
-    const res = await fetch("https://script.google.com/macros/s/AKfycbwGv9nmWP7AWXVKOXwPYOKsI2wtOa6QXYIB8UDgBZdSOJDYLkUlWWr-2gQC2WU1ul_IgA/exec");
-    examData = await res.json();
-    dataLoaded = true;
-    console.log("Data loaded successfully");
-  }catch(err){
-    console.log("Fetch error:", err);
-  }
-}
+      let found = false;
 
-window.onload = loadData;
+      for (let key in exams) {
+        if (key.includes(query) || exams[key].name.toLowerCase().includes(query)) {
 
-function searchExam(){
+          found = true;
+          const exam = exams[key];
 
-  const query = document.getElementById("search").value.trim().toLowerCase();
-  const resultsDiv = document.getElementById("results");
+          const card = document.createElement("div");
+          card.className = "result-card";
 
-  if(!dataLoaded){
-    resultsDiv.innerHTML = "<p>Loading data... please wait 2 seconds.</p>";
-    return;
-  }
+          const title = document.createElement("h3");
+          title.innerText = exam.name;
+          card.appendChild(title);
 
-  if(!query){
-    resultsDiv.innerHTML = "<p>Type something to search.</p>";
-    return;
-  }
+          for (let year in exam.years) {
+            const btn = document.createElement("button");
+            btn.innerText = year;
+            btn.onclick = function() {
+              window.open(exam.years[year], "_blank");
+            };
+            card.appendChild(btn);
+          }
 
-  let output = "";
+          resultsDiv.appendChild(card);
+        }
+      }
 
-  for(let i=1; i<examData.length; i++){
-
-    if(examData[i][0].toLowerCase().includes(query)){
-
-      output += `
-        <div class="card">
-          <h3>${examData[i][0]} - ${examData[i][1]}</h3>
-          <p>Category: ${examData[i][3]}</p>
-          <a href="${examData[i][2]}" target="_blank">Download PDF</a>
-        </div>
-      `;
+      if (!found) {
+        resultsDiv.innerHTML = "<p>No exam found.</p>";
+      }
     }
-  }
-
-  if(output === ""){
-    output = "<p>No exam found.</p>";
-  }
-
-  resultsDiv.innerHTML = output;
-}
-
-</script>
+  </script>
 
 </body>
 </html>
