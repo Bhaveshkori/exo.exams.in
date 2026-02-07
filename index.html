@@ -1,95 +1,101 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <meta charset="UTF-8">
   <title>ExoExams</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
   <style>
     body {
       margin: 0;
       font-family: Arial, sans-serif;
-      background: linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
       color: white;
       text-align: center;
     }
 
     h1 {
-      margin-top: 40px;
+      margin-top: 60px;
       font-size: 40px;
     }
 
-    .exam-container {
+    .container {
       margin-top: 40px;
     }
 
-    .exam-card {
-      background: rgba(255,255,255,0.1);
-      padding: 20px;
-      margin: 15px auto;
-      width: 250px;
-      border-radius: 10px;
+    .exam-btn {
+      padding: 15px 40px;
+      margin: 15px;
+      font-size: 18px;
+      border: none;
+      border-radius: 8px;
+      background: #00c6ff;
+      color: black;
       cursor: pointer;
       transition: 0.3s;
     }
 
-    .exam-card:hover {
-      background: rgba(255,255,255,0.2);
+    .exam-btn:hover {
+      background: #00a2d6;
     }
 
-    .year-list {
-      margin-top: 20px;
+    .years {
+      margin-top: 30px;
     }
 
     .year-btn {
-      display: inline-block;
+      padding: 10px 25px;
       margin: 10px;
-      padding: 10px 20px;
-      background: #00d2ff;
-      color: black;
       border-radius: 6px;
-      text-decoration: none;
-      font-weight: bold;
+      border: none;
+      cursor: pointer;
+      background: white;
+      color: black;
+    }
+
+    .year-btn:hover {
+      background: #ddd;
     }
   </style>
 </head>
-
 <body>
 
 <h1>ExoExams</h1>
-<p>Select Exam to Download Papers</p>
 
-<div class="exam-container" id="examContainer"></div>
+<div class="container">
+  <button class="exam-btn" onclick="showYears('jee')">JEE</button>
+  <button class="exam-btn" onclick="showYears('neet')">NEET</button>
+</div>
 
-<div class="year-list" id="yearList"></div>
-
-<!-- IMPORTANT: data.js FIRST -->
-<script src="data.js"></script>
+<div class="years" id="yearsContainer"></div>
 
 <script>
-  const container = document.getElementById("examContainer");
-  const yearList = document.getElementById("yearList");
+  const pepar = {
+    jee: {
+      "2024": "pepar/jee/2024.pdf",
+      "2023": "pepar/jee/2023.pdf",
+      "2022": "pepar/jee/2022.pdf"
+    },
+    neet: {
+      "2024": "pepar/neet/2024.pdf",
+      "2023": "pepar/neet/2023.pdf",
+      "2022": "pepar/neet/2022.pdf"
+    }
+  };
 
-  for (let key in exams) {
-    const card = document.createElement("div");
-    card.className = "exam-card";
-    card.innerText = exams[key].name;
-    card.onclick = () => showYears(key);
-    container.appendChild(card);
+  function showYears(exam) {
+    const container = document.getElementById("yearsContainer");
+    container.innerHTML = "";
+
+    for (let year in papers[exam]) {
+      container.innerHTML += `
+        <button class="year-btn" onclick="downloadPaper('${papers[exam][year]}')">
+          ${year}
+        </button>
+      `;
+    }
   }
 
-  function showYears(key) {
-    yearList.innerHTML = "";
-
-    const years = exams[key].years;
-
-    for (let year in years) {
-      const link = document.createElement("a");
-      link.href = years[year];
-      link.className = "year-btn";
-      link.innerText = year;
-      link.target = "_blank";
-      yearList.appendChild(link);
-    }
+  function downloadPaper(filePath) {
+    window.open(filePath, "_blank");
   }
 </script>
 
