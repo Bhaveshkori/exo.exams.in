@@ -18,24 +18,16 @@ h1{
   font-size:48px;
 }
 
-.search-box{
-  margin-top:20px;
-}
-
-input{
-  padding:12px;
-  width:250px;
-  border-radius:8px;
-  border:none;
-}
-
 .exam-container{
   margin-top:50px;
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  gap:20px;
 }
 
 .exam-card{
-  width:300px;
-  margin:20px auto;
+  width:250px;
   padding:20px;
   border-radius:12px;
   background:rgba(255,255,255,0.1);
@@ -49,13 +41,12 @@ input{
 }
 
 .year-list{
-  display:none;
   margin-top:15px;
 }
 
 .year-btn{
-  margin:8px;
-  padding:10px 15px;
+  margin:6px;
+  padding:8px 12px;
   background:#00c6ff;
   color:black;
   border-radius:6px;
@@ -68,49 +59,51 @@ input{
 <body>
 
 <h1>ExoExams</h1>
-<p>All Government Exam Papers in One Place</p>
+<p>Select Exam to Download Papers</p>
 
-<div class="search-box">
-  <input type="text" id="searchInput" placeholder="Search exam...">
-</div>
+<div class="exam-container" id="examContainer"></div>
 
-<div class="exam-container">
-
-  <div id="jeeCard" class="exam-card" onclick="toggleYears()">
-    <h2>JEE Advanced</h2>
-
-    <div id="yearList" class="year-list">
-      <div class="year-btn" onclick="openPDF(event,'pepar/jee/2024.pdf')">2024</div>
-      <div class="year-btn" onclick="openPDF(event,'pepar/jee/2023.pdf')">2023</div>
-      <div class="year-btn" onclick="openPDF(event,'pepar/jee/2022.pdf')">2022</div>
-    </div>
-
-  </div>
-
-</div>
+<script src="data.js"></script>
 
 <script>
 
-function toggleYears(){
-  const list = document.getElementById("yearList");
-  list.style.display = list.style.display === "block" ? "none" : "block";
-}
+const container = document.getElementById("examContainer");
 
-function openPDF(event,path){
-  event.stopPropagation();
-  window.open(path,"_blank");
-}
+for(let key in exams){
 
-document.getElementById("searchInput").addEventListener("input", function(){
-  const value = this.value.toLowerCase();
-  const card = document.getElementById("jeeCard");
+  const exam = exams[key];
 
-  if(value.includes("jee")){
-    card.style.display = "block";
-  } else {
-    card.style.display = "none";
+  const card = document.createElement("div");
+  card.className = "exam-card";
+
+  card.innerHTML = `<h2>${exam.name}</h2>`;
+
+  const yearList = document.createElement("div");
+  yearList.className = "year-list";
+  yearList.style.display = "none";
+
+  for(let year in exam.years){
+    const btn = document.createElement("div");
+    btn.className = "year-btn";
+    btn.innerText = year;
+
+    btn.onclick = function(event){
+      event.stopPropagation();
+      window.open(exam.years[year], "_blank");
+    };
+
+    yearList.appendChild(btn);
   }
-});
+
+  card.appendChild(yearList);
+
+  card.onclick = function(){
+    yearList.style.display =
+      yearList.style.display === "block" ? "none" : "block";
+  };
+
+  container.appendChild(card);
+}
 
 </script>
 
