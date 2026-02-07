@@ -1,5 +1,5 @@
 "JEE Advanced": [
-   { year: "2024", file: "pepar/Ch26.pdf" }
+   { year: "2025", file: "pepar/Ch26.pdf" }
 ]
 
 const exams = {
