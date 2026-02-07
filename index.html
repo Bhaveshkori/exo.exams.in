@@ -1,102 +1,148 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="UTF-8">
-  <title>ExoExams</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
-      color: white;
-      text-align: center;
-    }
+<meta charset="UTF-8">
+<title>ExoExams</title>
 
-    h1 {
-      margin-top: 60px;
-      font-size: 40px;
-    }
+<style>
+body {
+  margin:0;
+  font-family: Arial, sans-serif;
+  background: linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+  color:white;
+  text-align:center;
+}
 
-    .container {
-      margin-top: 40px;
-    }
+h1{
+  margin-top:50px;
+  font-size:40px;
+}
 
-    .exam-btn {
-      padding: 15px 40px;
-      margin: 15px;
-      font-size: 18px;
-      border: none;
-      border-radius: 8px;
-      background: #00c6ff;
-      color: black;
-      cursor: pointer;
-      transition: 0.3s;
-    }
+.search-box{
+  margin-top:30px;
+}
 
-    .exam-btn:hover {
-      background: #00a2d6;
-    }
+input{
+  padding:12px;
+  width:250px;
+  border-radius:6px;
+  border:none;
+}
 
-    .years {
-      margin-top: 30px;
-    }
+button{
+  padding:12px 20px;
+  border:none;
+  border-radius:6px;
+  cursor:pointer;
+  margin-left:5px;
+}
 
-    .year-btn {
-      padding: 10px 25px;
-      margin: 10px;
-      border-radius: 6px;
-      border: none;
-      cursor: pointer;
-      background: white;
-      color: black;
-    }
+.search-btn{
+  background:#00c6ff;
+  color:black;
+}
 
-    .year-btn:hover {
-      background: #ddd;
-    }
-  </style>
+.cards{
+  margin-top:50px;
+}
+
+.card{
+  display:inline-block;
+  background:white;
+  color:black;
+  padding:20px 40px;
+  margin:20px;
+  border-radius:10px;
+  cursor:pointer;
+  font-size:18px;
+  transition:0.3s;
+}
+
+.card:hover{
+  background:#00c6ff;
+}
+
+.years{
+  margin-top:30px;
+}
+
+.year-btn{
+  background:white;
+  color:black;
+  margin:10px;
+}
+</style>
 </head>
+
 <body>
 
 <h1>ExoExams</h1>
 
-<div class="container">
-  <button class="exam-btn" onclick="showYears('jee')">JEE</button>
-  <button class="exam-btn" onclick="showYears('neet')">NEET</button>
+<div class="search-box">
+  <input type="text" id="searchInput" placeholder="Search exam (jee 2024)">
+  <button class="search-btn" onclick="searchPaper()">Search</button>
 </div>
 
-<div class="years" id="yearsContainer"></div>
+<div id="searchResult" class="years"></div>
+
+<div class="cards">
+  <div class="card" onclick="showYears('jee')">JEE</div>
+  <div class="card" onclick="showYears('neet')">NEET</div>
+</div>
+
+<div id="yearContainer" class="years"></div>
 
 <script>
-  const pepar = {
-    jee: {
-      "2024": "pepar/jee/2024.pdf",
-      "2023": "pepar/jee/2023.pdf",
-      "2022": "pepar/jee/2022.pdf"
-    },
-    neet: {
-      "2024": "pepar/neet/2024.pdf",
-      "2023": "pepar/neet/2023.pdf",
-      "2022": "pepar/neet/2022.pdf"
-    }
-  };
 
-  function showYears(exam) {
-    const container = document.getElementById("yearsContainer");
-    container.innerHTML = "";
+const pepar = {
+  jee:{
+    "2024":"pepar/jee/2024.pdf",
+    "2023":"pepar/jee/2023.pdf",
+    "2022":"pepar/jee/2022.pdf"
+  },
+  neet:{
+    "2024":"pepar/neet/2024.pdf",
+    "2023":"pepar/neet/2023.pdf",
+    "2022":"pepar/neet/2022.pdf"
+  }
+};
 
-    for (let year in papers[exam]) {
-      container.innerHTML += `
-        <button class="year-btn" onclick="downloadPaper('${papers[exam][year]}')">
-          ${year}
-        </button>
-      `;
+function searchPaper(){
+  const input = document.getElementById("searchInput").value.toLowerCase();
+  const resultDiv = document.getElementById("searchResult");
+  resultDiv.innerHTML = "";
+
+  for(let exam in papers){
+    for(let year in papers[exam]){
+      if(input.includes(exam) && input.includes(year)){
+        resultDiv.innerHTML = `
+        <button class="year-btn" onclick="openPaper('${papers[exam][year]}')">
+        ${exam.toUpperCase()} ${year}
+        </button>`;
+        return;
+      }
     }
   }
 
-  function downloadPaper(filePath) {
-    window.open(filePath, "_blank");
+  resultDiv.innerHTML = "No paper found.";
+}
+
+function showYears(exam){
+  const container = document.getElementById("yearContainer");
+  container.innerHTML = "";
+
+  for(let year in papers[exam]){
+    container.innerHTML += `
+      <button class="year-btn" onclick="openPaper('${papers[exam][year]}')">
+      ${year}
+      </button>`;
   }
+}
+
+function openPaper(path){
+  window.open(path,"_blank");
+}
+
 </script>
 
 </body>
