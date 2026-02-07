@@ -18,6 +18,17 @@ h1{
   font-size:48px;
 }
 
+.search-box{
+  margin-top:20px;
+}
+
+input{
+  padding:12px;
+  width:250px;
+  border-radius:8px;
+  border:none;
+}
+
 .exam-container{
   margin-top:50px;
 }
@@ -59,15 +70,19 @@ h1{
 <h1>ExoExams</h1>
 <p>All Government Exam Papers in One Place</p>
 
+<div class="search-box">
+  <input type="text" id="searchInput" placeholder="Search exam...">
+</div>
+
 <div class="exam-container">
 
-  <div class="exam-card" onclick="toggleYears()">
+  <div id="jeeCard" class="exam-card" onclick="toggleYears()">
     <h2>JEE Advanced</h2>
 
     <div id="yearList" class="year-list">
-      <div class="year-btn" onclick="openPDF('pepar/jee/2024.pdf')">2024</div>
-      <div class="year-btn" onclick="openPDF('pepar/jee/2023.pdf')">2023</div>
-      <div class="year-btn" onclick="openPDF('pepar/jee/2022.pdf')">2022</div>
+      <div class="year-btn" onclick="openPDF(event,'pepar/jee/2024.pdf')">2024</div>
+      <div class="year-btn" onclick="openPDF(event,'pepar/jee/2023.pdf')">2023</div>
+      <div class="year-btn" onclick="openPDF(event,'pepar/jee/2022.pdf')">2022</div>
     </div>
 
   </div>
@@ -81,9 +96,21 @@ function toggleYears(){
   list.style.display = list.style.display === "block" ? "none" : "block";
 }
 
-function openPDF(path){
+function openPDF(event,path){
+  event.stopPropagation();
   window.open(path,"_blank");
 }
+
+document.getElementById("searchInput").addEventListener("input", function(){
+  const value = this.value.toLowerCase();
+  const card = document.getElementById("jeeCard");
+
+  if(value.includes("jee")){
+    card.style.display = "block";
+  } else {
+    card.style.display = "none";
+  }
+});
 
 </script>
 
