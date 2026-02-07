@@ -18,10 +18,15 @@ body{
   padding:80px 20px;
 }
 
+h1{
+  font-size:40px;
+  margin-bottom:10px;
+}
+
 input{
   padding:12px;
   width:60%;
-  max-width:400px;
+  max-width:350px;
   border-radius:8px;
   border:none;
 }
@@ -33,13 +38,14 @@ button{
   background:#00f2fe;
   cursor:pointer;
   margin-left:5px;
+  font-weight:bold;
 }
 
 .card{
   background:rgba(255,255,255,0.1);
   margin:20px auto;
   padding:20px;
-  width:80%;
+  width:85%;
   max-width:500px;
   border-radius:12px;
 }
@@ -66,11 +72,13 @@ a{
 <script>
 
 let examData = [];
+let dataLoaded = false;
 
 async function loadData(){
   try{
     const res = await fetch("https://script.google.com/macros/s/AKfycbwGv9nmWP7AWXVKOXwPYOKsI2wtOa6QXYIB8UDgBZdSOJDYLkUlWWr-2gQC2WU1ul_IgA/exec");
     examData = await res.json();
+    dataLoaded = true;
     console.log("Data loaded successfully");
   }catch(err){
     console.log("Fetch error:", err);
@@ -81,16 +89,16 @@ window.onload = loadData;
 
 function searchExam(){
 
-  const query = document.getElementById("search").value.toLowerCase();
+  const query = document.getElementById("search").value.trim().toLowerCase();
   const resultsDiv = document.getElementById("results");
 
-  if(!query){
-    resultsDiv.innerHTML = "<p>Type something to search.</p>";
+  if(!dataLoaded){
+    resultsDiv.innerHTML = "<p>Loading data... please wait 2 seconds.</p>";
     return;
   }
 
-  if(examData.length === 0){
-    resultsDiv.innerHTML = "<p>Data not loaded yet. Wait 2 seconds.</p>";
+  if(!query){
+    resultsDiv.innerHTML = "<p>Type something to search.</p>";
     return;
   }
 
